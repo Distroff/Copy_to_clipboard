@@ -1,6 +1,6 @@
 import win32api, win32gui
 import pyperclip
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 import locale
 import time
 
@@ -28,8 +28,13 @@ locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 setCyrillicLayout()
 
 #   Вводим данные
-show_name = input('Введите название спектакля: > ')
-show_date = date.fromisoformat(input('Введите дату в формате YYYY-MM-DD: > '))
+# show_name = input('Введите название спектакля: > ')
+# show_date = date.fromisoformat(input('Введите дату в формате YYYY-MM-DD: > '))
+
+show_filename = input('Введите название файла: > ')
+show_name = show_filename.split('_')[1]
+show_date = datetime.strptime(show_filename.split('_')[-1], '%Y%m%d')
+
 
 #   Получаем день (числом), месяц (словом в родительном падеже) и год (числом)
 d = show_date.day
@@ -54,8 +59,8 @@ text = f'''Здравствуйте.
 
 #   Копируем текст в буфер
 pyperclip.copy(text)
-pyperclip.paste()
-print()
+t = pyperclip.paste()
+# print(t)
 print(text)
 time.sleep(1)
 
