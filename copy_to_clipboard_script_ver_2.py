@@ -108,11 +108,3 @@ finish_label.pack()
 win.mainloop()
 
 
-
-
-
-
-
-'''
-сюда вставить код из copy_to_clipboard_script_2.py
-'''
