@@ -3,15 +3,36 @@ import pyperclip
 from datetime import date, timedelta, datetime
 import locale
 import time
+import subprocess
+import webbrowser
+import os
+
 
 from tkinter import *
 from tkinter import ttk
 
 flag = False
 text = '---'
+
+def open_browsers(file_name):
+    upload_url = 'f.gamt.su'
+    webbrowser.open(upload_url)  # открываем страницу для загрузки файла
+    file_path = ''
+    id_n = file_name.split('_')[0]  # получаем id номер файла
+    start_path = fr'V:\DATA\{id_n[2]}\{id_n[1]}\{id_n[0]}'
+    file_list = os.listdir(start_path)  # список файлов в папке
+    for f_n in file_list:
+        if f_n.startswith(id_n):
+            file_path = fr'{start_path}\{f_n}'
+
+    explorer_on_file(file_path)  # открываем проводник с файлом
+    # print(file_path)
+
+
 def get_data_from_entry():
     global flag, text
     inp_text = entry.get()
+    id_show = inp_text.split('_')[0]
     show_name = inp_text.split('_')[1]
     show_date = datetime.strptime(inp_text.split('_')[-1], '%Y%m%d')
 
@@ -35,6 +56,8 @@ def get_data_from_entry():
     Файл будет доступен до {exp_d} {exp_m} {exp_y} года.
 
     '''
+
+    open_browsers(inp_text)  #  ищем путь к файлу запускаем проводник и браузер
 
     #   Копируем текст в буфер
     pyperclip.copy(text)
@@ -69,6 +92,13 @@ def paste_fr_cl():
     clipboard = win.clipboard_get()  # Get the copied item from system clipboard
     entry.insert('end', clipboard)  # Insert the item into the entry widget
 
+
+def explorer_on_file(url):
+    """ opens a Windows explorer window """
+    subprocess.Popen(fr'explorer /select,"{url}"')
+
+
+# ============= MAIN CODE =============
 
 #   Устанавливаем русскую локализацию
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
