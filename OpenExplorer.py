@@ -5,7 +5,7 @@ def explorer_on_file(url):
     subprocess.Popen(f'explorer /select,"{url}"')
 
 file_name = '2B21167600_Дон Кихот_20240203.mov'
-file_path = r"V:\DATA\2\B\2\2B21167600_Дон Кихот_20240203.mov"
+# file_path = r"V:\DATA\2\B\2\2B21167600_Дон Кихот_20240203.mov"
 # file_path = r"\\big1\VIDEO\DATA\2\B\2\2B21167600_Дон Кихот_20240203.mov"
 # file_path = r'C:\adb\adb.exe'
 
