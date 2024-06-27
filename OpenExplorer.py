@@ -1,8 +1,8 @@
 import subprocess
 import os
 def explorer_on_file(url):
-    """ opens a windows explorer window """
-    subprocess.Popen(r'explorer /select,"{url}"')
+    """ opens a Windows explorer window """
+    subprocess.Popen(fr'explorer /select,"{url}"')
 
 
 FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
@@ -18,7 +18,7 @@ def explore(path):
 
 
 # file_name = '2B21167600_Дон Кихот_20240203.mov'
-file_path = r"V:\DATA\2\B\2\2B21167600_Дон_Кихот_20240203.mov"
+file_path = r"V:\DATA\2\B\1\1B20172800-Сильвия-20140404.mp4"
 # file_path = r"V:/DATA/2/B/2/2B21167600_Дон Кихот_20240203.mov"
 # file_path = r"\\big1\VIDEO\DATA\2\B\2\2B21167600_Дон Кихот_20240203.mov"
 # file_path = r'C:\adb\adb.exe'
