@@ -24,6 +24,7 @@ def open_browsers(file_name):
     for f_n in file_list:
         if f_n.startswith(id_n):
             file_path = fr'{start_path}\{f_n}'
+            break
 
     explorer_on_file(file_path)  # открываем проводник с файлом
     # print(file_path)
@@ -32,9 +33,8 @@ def open_browsers(file_name):
 def get_data_from_entry():
     global flag, text
     inp_text = entry.get()
-    id_show = inp_text.split('_')[0]
-    show_name = inp_text.split('_')[1]
-    show_date = datetime.strptime(inp_text.split('_')[-1], '%Y%m%d')
+    id_show, show_name, show_date_str = inp_text.split('_')
+    show_date = datetime.strptime(show_date_str, '%Y%m%d')
 
     #   Получаем день (числом), месяц (словом в родительном падеже) и год (числом)
     d = show_date.day
@@ -57,7 +57,7 @@ def get_data_from_entry():
 
     '''
 
-    open_browsers(inp_text)  #  ищем путь к файлу запускаем проводник и браузер
+
 
     #   Копируем текст в буфер
     pyperclip.copy(text)
@@ -66,6 +66,7 @@ def get_data_from_entry():
     win.update()
 
     time.sleep(1)
+    open_browsers(inp_text)  # ищем путь к файлу запускаем проводник и браузер
     win.destroy()
 
 
