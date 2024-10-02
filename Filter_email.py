@@ -9,7 +9,7 @@ try:
     browser.get(link)
 
     srch = browser.find_element(By.ID, "filter2")
-    srch.send_keys(r'капит')
+    srch.send_keys(r'калашни')
 
     time.sleep(600)
 
