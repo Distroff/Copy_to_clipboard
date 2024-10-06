@@ -10,8 +10,10 @@ import os
 from tkinter import *
 
 
+
+
 flag = False
-text = '---'
+final_text = '---'
 
 
 def open_browsers(file_name):
@@ -31,8 +33,8 @@ def open_browsers(file_name):
 
 
 def get_data_from_entry():
-    global flag, text
-    inp_text = entry.get()
+    global flag, final_text
+    inp_text = filename_entry.get()
     id_show, show_name, show_date_str = inp_text.split('_')
     show_date = datetime.strptime(show_date_str, '%Y%m%d')
 
@@ -47,19 +49,35 @@ def get_data_from_entry():
     exp_m = genetive_converter(exp_date)
     exp_y = exp_date.year
 
+
+
+
+    #   ОТКРЫВАЕМ ТЕСТ БРАУЗЕР И ИЩЕМ EMAIL АДРЕСАТА, УЗНАЕМ ИНИЦИАЛЫ
+
+    first_name = ''
+    patron_name = ''
+    last_name = ''
+    email = 'addres@mariinsky.ru'
+
+    #   ОТКРЫВАЕМ НОВУЮ ВКЛАДКУ, ЗАПУСКАЕМ ЗАГРУЗКУ ФАЙЛА И ЖДЕМ ССЫЛКУ
+
+    link_for_download = ''
+
     #   Формируем текст
-    text = f'''Здравствуйте.
+    final_text = f'''Здравствуйте, {first_name} {patron_name}!
 
     Скачать спектакль "{show_name}" от {d} {m} {y} года можно по ссылке:
 
+    {link_for_download}
 
     Файл будет доступен до {exp_d} {exp_m} {exp_y} года.
-
+    
+    {email}
     '''
 
     #   Копируем текст в буфер
-    pyperclip.copy(text)
-    finish_label.configure(text=text)  # сюда надо записать итоговый результат
+    pyperclip.copy(final_text)
+    finish_label.configure(text=final_text)  # сюда надо записать итоговый результат
 
     win.update()
 
@@ -89,13 +107,16 @@ def genetive_converter(date_data: date) -> str:
 def paste_fr_cl():
     # from_cb = pyperclip.paste()  # получаем текст из буфера обмена
     clipboard = win.clipboard_get()  # Get the copied item from system clipboard
-    entry.insert('end', clipboard)  # Insert the item into the entry widget
+    filename_entry.insert('end', clipboard)  # Insert the item into the entry widget
 
 
 def explorer_on_file(url):
     """ opens a Windows explorer window """
     subprocess.Popen(fr'explorer /select,"{url}"')
 
+def check_correct_name(filename:str) -> bool:
+    '''Сделать проверку на правильность файла'''
+    pass
 
 # ============= MAIN CODE =============
 
@@ -110,32 +131,53 @@ win.title('Копируем текст письма в буфер обмена')
 
 # Устанавливаем размеры окна
 win.geometry("1000x250")
-entry_filename_frame = Frame(win, padx=10, pady=10)  # widget Frame название файла и кнопка
+entry_filename_frame = Frame(win,
+                        padx=10,
+                        pady=10) # borderwidth=2, background='grey')  # widget Frame название файла и кнопка
 entry_filename_frame.pack()
-entry_fio_frame = Frame(win, padx=10, pady=10)  # widget фамилия
+entry_fio_frame = Frame(win,
+                        padx=10,
+                        pady=10)  # widget фамилия
 entry_fio_frame.pack()
 
 #  Создаем виджет поле ввода
 
 
 #  Initialize a Label widgets
-label_for_filename_entry = Label(entry_filename_frame, text='Введите имя файла: ', padx=10, pady=10, font=('Helvetica 13'))
-fio_label = Label(entry_fio_frame, text="Введите фамилию (опционально): ", font=('Helvetica 13'))
-finish_label = Label(win, text=text, font=('Helvetica 13', 15, 'bold'))
+label_for_filename_entry = Label(entry_filename_frame,
+                                 text='Введите имя файла: ')    # padx=10, pady=10, font=('Helvetica 11'))
+fio_label = Label(entry_fio_frame,
+                  text="Введите фамилию (опционально): ",
+                  font=('Helvetica 12'))
+finish_label = Label(win,
+                     text=final_text,
+                     font=('Helvetica 13', 15, 'bold'))
 
 #  Create Buttons widgets
-btn_enter = Button(win, text="GO!", command=get_data_from_entry, padx=10, pady=10, height=3, width=10)  # To enter the input text
-paste_from_cb_button = Button(entry_filename_frame, text='Вставить из буфера обмена', command=paste_fr_cl)
+btn_enter = Button(win, text="GO!",
+                   command=get_data_from_entry,
+                   padx=10,
+                   pady=10,
+                   height=3,
+                   width=10)  # To enter the input text
+paste_from_cb_button = Button(entry_filename_frame,
+                              text='Вставить название из буфера обмена =>> ',
+                              font=('Helvetica 12'),
+                              background='lightgrey',
+                              activebackground='lightyellow',
+                              command=paste_fr_cl)
 
 # Create entry fields
-filename_entry = Entry(entry_filename_frame, width=42)
-fio_entry = Entry(entry_fio_frame, width=42)
+filename_entry = Entry(entry_filename_frame,
+                       width=42, )
+fio_entry = Entry(entry_fio_frame,
+                  width=42)
 
 # Drawing widgets
 
-label_for_filename_entry.pack(side=LEFT)  # Поле "Введите название файла"
-filename_entry.pack()  #  Поле для ввода названия файла
-paste_from_cb_button.pack(side=RIGHT, before=filename_entry)  # кнопка вставить из буфера
+# label_for_filename_entry.pack(side=LEFT)  # Поле "Введите название файла"
+paste_from_cb_button.pack(side=LEFT)  # кнопка вставить из буфера
+filename_entry.pack(side=LEFT)  #  Поле для ввода названия файла
 
 fio_label.pack(side=LEFT)
 fio_entry.pack()
